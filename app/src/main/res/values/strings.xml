@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Download Image Viewer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="enter_url_text">Enter URL of Image below.</string>
+    <string name="url_edit_text_hint">Enter URL here</string>
+    <string name="download_button_text">Download Image</string>
+
+</resources>
