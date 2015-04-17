@@ -1,6 +1,7 @@
 package com.jackmiddlebrook.downloadimageviewer;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -10,6 +11,8 @@ import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import static com.jackmiddlebrook.downloadimageviewer.Utils.downloadImage;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -33,14 +36,12 @@ public class MainActivity extends ActionBarActivity {
         mDownloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getUrl();
+                Uri imageUrl = getUrl();
+                new DownloadImageTask().execute(imageUrl);
             }
         });
 
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,6 +91,20 @@ public class MainActivity extends ActionBarActivity {
                     "Invalid URL",
                     Toast.LENGTH_SHORT).show();
             return null;
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<Uri, Integer, Uri> {
+
+        @Override
+        protected Uri doInBackground(Uri... uris) {
+            return downloadImage(getApplicationContext(), uris[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Uri uri) {
+            super.onPostExecute(uri);
+            Toast.makeText(getApplicationContext(), "Image file: " + uri, Toast.LENGTH_LONG).show();
         }
     }
 }
