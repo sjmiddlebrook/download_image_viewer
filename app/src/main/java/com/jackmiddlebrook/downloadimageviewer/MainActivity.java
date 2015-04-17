@@ -1,18 +1,45 @@
 package com.jackmiddlebrook.downloadimageviewer;
 
-import android.support.v7.app.ActionBarActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.URLUtil;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    @Override
+    private final String TAG = getClass().getSimpleName();
+
+    private EditText mUrlEditText;
+
+    private Button mDownloadButton;
+
+    private Uri mDefaultUrl =
+            Uri.parse("http://en.wikipedia.org/wiki/Lake_Tahoe#/media/File:Emerald_Bay.jpg");
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mUrlEditText = (EditText) findViewById(R.id.urlEditText);
+        mDownloadButton = (Button) findViewById(R.id.downloadButton);
+
+        mDownloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getUrl();
+            }
+        });
+
     }
+
+
 
 
     @Override
@@ -35,5 +62,34 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Get the URL to download based on user input.
+     */
+    protected Uri getUrl() {
+        Uri url = null;
+
+        // Get the text the user typed in the edit text (if anything).
+        url = Uri.parse(mUrlEditText.getText().toString());
+
+        // If the user didn't provide a URL then use the default.
+        String uri = url.toString();
+        if (uri == null || uri.equals(""))
+            url = mDefaultUrl;
+
+        // Do a sanity check to ensure the URL is valid, popping up a
+        // toast if the URL is invalid.
+        if (URLUtil.isValidUrl(url.toString())) {
+            Toast.makeText(this,
+                    "URL: " + url,
+                    Toast.LENGTH_SHORT).show();
+            return url;
+        } else {
+            Toast.makeText(this,
+                    "Invalid URL",
+                    Toast.LENGTH_SHORT).show();
+            return null;
+        }
     }
 }
