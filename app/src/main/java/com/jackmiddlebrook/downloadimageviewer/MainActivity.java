@@ -26,9 +26,7 @@ public class MainActivity extends ActionBarActivity {
     private Button mDownloadButton;
 
     private Uri mDefaultUrl =
-            Uri.parse("http://jackmiddlebrook.com/img/jack.jpg");
-
-    private Uri mImagePath;
+            Uri.parse("https://drscdn.500px.org/photo/96496237/m=2048_k=1_a=1/91e3b0b6a06e69a321e7ce3661ac0036");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +105,11 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Uri uri) {
             super.onPostExecute(uri);
-            new FilterImageTask().execute(uri);
+            if (uri != null) {
+                new FilterImageTask().execute(uri);
+            } else {
+                Toast.makeText(getApplicationContext(), "Download failed", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
