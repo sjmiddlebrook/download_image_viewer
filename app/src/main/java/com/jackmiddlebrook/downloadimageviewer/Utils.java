@@ -117,22 +117,24 @@ public class Utils {
 
             // Download the contents at the URL, which should
             // reference an image.
-            inputStream =
-                (InputStream) new URL(url.toString()).getContent();
+            inputStream = (InputStream) new URL(url.toString()).getContent();
             filename = url.toString();
 
+
+
             // Decode the InputStream into a Bitmap image.
-            Bitmap bitmap =
-                BitmapFactory.decodeStream(inputStream);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
             // Bail out of we get an invalid bitmap.
-            if (bitmap == null)
+            if (bitmap == null) {
+                Log.d(TAG, "bitmap is invalid");
                 return null;
-            else
+            } else {
                 // Create an output file and save the image into it.
-                return Utils.createDirectoryAndSaveFile(context, 
-                                                        bitmap,
-                                                        filename);
+                return Utils.createDirectoryAndSaveFile(context,
+                        bitmap,
+                        filename);
+            }
         } catch (Exception e) {
             Log.e(TAG, "Exception while downloading. Returning null.");
             Log.e(TAG, e.toString());
